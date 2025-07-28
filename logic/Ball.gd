@@ -22,7 +22,7 @@ func set_color(color):
 	ball_color = color
 	$PointLight2D.color = color
 	if ($MetaNode.ball_name == "Standard ball"):
-		update()
+		queue_redraw()
 	else:
 		$Polygon2D.color = color
 

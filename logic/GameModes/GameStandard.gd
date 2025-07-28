@@ -121,7 +121,7 @@ func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 	elif ball_linear_velocity.y > 0 and distance_to_midcolumn_points.min() > 0:
 		line_point += 1
 	
-	var things_at_point = get_world_2d().direct_space_state.intersect_point(game_control.columns[3].get_point_position(line_point), 32, [], 1, true, true)
+	var things_at_point = get_world_2d().direct_space_state.intersect_point(game_control.columns[3].get_point_position(line_point), 32)
 	
 	if line_point < 8 and things_at_point.is_empty():
 		var bounce_request = game_control.SpecialRequest.new()
