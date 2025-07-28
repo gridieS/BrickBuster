@@ -8,9 +8,9 @@ func _ready():
 	pass
 
 func _process(delta):
-	update() # Update _draw
+	queue_redraw() # Update _draw
 
 func _draw():
 	if game_control.drag_enabled and game_control.draw_touch_marker:
 		# Touch/click marker
-		draw_circle(game_control.first_click_position, 25, ColorN("white", 0.5))
+		draw_circle(game_control.first_click_position, 25, Color("white", 0.5))

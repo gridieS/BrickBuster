@@ -1,201 +1,147 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=10 format=3 uid="uid://km344do8yffd"]
 
-[ext_resource path="res://styling/button_style/CloseButton_normal.stylebox" type="StyleBox" id=1]
-[ext_resource path="res://logic/DonateMenu.gd" type="Script" id=2]
-[ext_resource path="res://styling/fonts/NotoSans_Bold.tres" type="FontFile" id=3]
-[ext_resource path="res://styling/button_style/ApplyButton_normal.stylebox" type="StyleBox" id=4]
-[ext_resource path="res://styling/button_style/CloseButton_hover.stylebox" type="StyleBox" id=5]
-[ext_resource path="res://styling/button_style/ApplyButton_hover.stylebox" type="StyleBox" id=6]
-[ext_resource path="res://styling/button_style/CloseButton_pressed.stylebox" type="StyleBox" id=7]
-[ext_resource path="res://styling/fonts/NotoSans.tres" type="FontFile" id=8]
-[ext_resource path="res://styling/button_style/ApplyButton_pressed.stylebox" type="StyleBox" id=9]
+[ext_resource type="StyleBox" path="res://styling/button_style/CloseButton_normal.stylebox" id="1"]
+[ext_resource type="Script" uid="uid://c70mdtqbl312i" path="res://logic/DonateMenu.gd" id="2"]
+[ext_resource type="FontFile" path="res://styling/fonts/NotoSans_Bold.tres" id="3"]
+[ext_resource type="StyleBox" path="res://styling/button_style/ApplyButton_normal.stylebox" id="4"]
+[ext_resource type="StyleBox" path="res://styling/button_style/CloseButton_hover.stylebox" id="5"]
+[ext_resource type="StyleBox" path="res://styling/button_style/ApplyButton_hover.stylebox" id="6"]
+[ext_resource type="StyleBox" path="res://styling/button_style/CloseButton_pressed.stylebox" id="7"]
+[ext_resource type="FontFile" path="res://styling/fonts/NotoSans.tres" id="8"]
+[ext_resource type="StyleBox" path="res://styling/button_style/ApplyButton_pressed.stylebox" id="9"]
 
 [node name="DonateMenu" type="Popup"]
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -340.0
-offset_top = -400.0
-offset_right = 340.0
-offset_bottom = 400.0
-grow_horizontal = 2
-grow_vertical = 2
-custom_minimum_size = Vector2( 400, 0 )
-script = ExtResource( 2 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+size = Vector2i(496, 270)
+visible = true
+script = ExtResource("2")
 
 [node name="Panel" type="Panel" parent="."]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_bottom = 23.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 20.0
 offset_top = 20.0
 offset_right = -20.0
 offset_bottom = -50.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-offset_right = 640.0
-offset_bottom = 730.0
+layout_mode = 2
 theme_override_constants/separation = 20
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
-offset_right = 640.0
-offset_bottom = 181.0
+layout_mode = 2
 
 [node name="MenuTitle" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
-offset_right = 640.0
-offset_bottom = 58.0
+layout_mode = 2
 size_flags_vertical = 0
-theme_override_fonts/font = ExtResource( 3 )
+theme_override_fonts/font = ExtResource("3")
 text = "Donation"
-align = 1
-autowrap = true
+horizontal_alignment = 1
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainer"]
-offset_top = 62.0
-offset_right = 640.0
-offset_bottom = 181.0
-theme_override_fonts/font = ExtResource( 8 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8")
 text = "Thank you for being a generous brickbuster!"
-align = 1
-autowrap = true
+horizontal_alignment = 1
 
 [node name="VBoxContainerText" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
-offset_top = 201.0
-offset_right = 640.0
-offset_bottom = 590.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainerText"]
-offset_right = 640.0
-offset_bottom = 181.0
+layout_mode = 2
 
 [node name="MeTitle" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainerText/VBoxContainer"]
-offset_right = 640.0
-offset_bottom = 58.0
-theme_override_fonts/font = ExtResource( 3 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3")
 text = "Me, Clau Cambra"
-autowrap = true
 
 [node name="MeDesc" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainerText/VBoxContainer"]
-offset_top = 62.0
-offset_right = 640.0
-offset_bottom = 181.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-theme_override_fonts/font = ExtResource( 8 )
+theme_override_fonts/font = ExtResource("8")
 text = "The guy that created this game. I hope you've been enjoying it!"
-autowrap = true
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/VBoxContainerText"]
-offset_top = 191.0
-offset_right = 640.0
-offset_bottom = 372.0
+layout_mode = 2
 
 [node name="GodotTitle" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainerText/VBoxContainer2"]
-offset_right = 640.0
-offset_bottom = 58.0
-theme_override_fonts/font = ExtResource( 3 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3")
 text = "Godot"
 
 [node name="GodotDesc" type="Label" parent="MarginContainer/VBoxContainer/VBoxContainerText/VBoxContainer2"]
-offset_top = 62.0
-offset_right = 640.0
-offset_bottom = 181.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-theme_override_fonts/font = ExtResource( 8 )
+theme_override_fonts/font = ExtResource("8")
 text = "The awesome engine that makes this game possible."
-autowrap = true
 
 [node name="ButtonsGridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer"]
-offset_top = 610.0
-offset_right = 640.0
-offset_bottom = 730.0
+layout_mode = 2
 columns = 2
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="LearnMeButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsGridContainer"]
-offset_right = 290.0
-offset_bottom = 58.0
-theme_override_styles/hover = ExtResource( 6 )
-theme_override_styles/pressed = ExtResource( 9 )
-theme_override_styles/normal = ExtResource( 4 )
-theme_override_fonts/font = ExtResource( 8 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8")
+theme_override_styles/hover = ExtResource("6")
+theme_override_styles/pressed = ExtResource("9")
+theme_override_styles/normal = ExtResource("4")
 text = "My projects"
 
 [node name="LearnGodotButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsGridContainer"]
-offset_left = 294.0
-offset_right = 640.0
-offset_bottom = 58.0
-theme_override_styles/hover = ExtResource( 6 )
-theme_override_styles/pressed = ExtResource( 9 )
-theme_override_styles/normal = ExtResource( 4 )
-theme_override_fonts/font = ExtResource( 8 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8")
+theme_override_styles/hover = ExtResource("6")
+theme_override_styles/pressed = ExtResource("9")
+theme_override_styles/normal = ExtResource("4")
 text = "About Godot"
 
 [node name="MeDonateButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsGridContainer"]
-offset_top = 62.0
-offset_right = 290.0
-offset_bottom = 120.0
+layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/hover = ExtResource( 6 )
-theme_override_styles/pressed = ExtResource( 9 )
-theme_override_styles/normal = ExtResource( 4 )
-theme_override_fonts/font = ExtResource( 3 )
+theme_override_fonts/font = ExtResource("3")
+theme_override_styles/hover = ExtResource("6")
+theme_override_styles/pressed = ExtResource("9")
+theme_override_styles/normal = ExtResource("4")
 text = "Donate to me"
 
 [node name="GodotDonateButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsGridContainer"]
-offset_left = 294.0
-offset_top = 62.0
-offset_right = 640.0
-offset_bottom = 120.0
+layout_mode = 2
 size_flags_horizontal = 3
-theme_override_styles/hover = ExtResource( 6 )
-theme_override_styles/pressed = ExtResource( 9 )
-theme_override_styles/normal = ExtResource( 4 )
-theme_override_fonts/font = ExtResource( 3 )
+theme_override_fonts/font = ExtResource("3")
+theme_override_styles/hover = ExtResource("6")
+theme_override_styles/pressed = ExtResource("9")
+theme_override_styles/normal = ExtResource("4")
 text = "Donate to Godot"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = -39.0
 size_flags_horizontal = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="CloseButton" type="Button" parent="HBoxContainer"]
-offset_right = 680.0
-offset_bottom = 58.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme_override_styles/hover = ExtResource( 5 )
-theme_override_styles/pressed = ExtResource( 7 )
-theme_override_styles/normal = ExtResource( 1 )
-theme_override_fonts/font = ExtResource( 8 )
+theme_override_fonts/font = ExtResource("8")
+theme_override_styles/hover = ExtResource("5")
+theme_override_styles/pressed = ExtResource("7")
+theme_override_styles/normal = ExtResource("1")
 text = "Close"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

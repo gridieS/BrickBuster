@@ -10,7 +10,7 @@ extends Line2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	default_color = ColorN("red", 1)
+	default_color = Color("red", 1)
 	var length = get_viewport_rect().size.x + get_viewport_rect().size.y
 	points[0] = Vector2.ZERO
 	points[1] = Vector2(length, 0)

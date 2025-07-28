@@ -17,7 +17,7 @@ var selected_game_mode = null
 func on_game_prepped():
 	global.fetch_game_modes()
 	
-	if global.save_game:
+	if global.save_game_data != null:
 		
 		# Avoid breakage for those on old versions of the game
 		if "game_mode" in global.save_game_data:

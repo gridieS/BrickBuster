@@ -147,11 +147,11 @@ func save():
 		save_dict.destroyables.append(save_destroyable)
 	
 	# 'user://' data path varies by OS
-	global.save_game.open("user://savegame.save", File.WRITE)
+	var save_game = FileAccess.open("user://savegame.save", FileAccess.WRITE)
 	
 	# Store the save dictionary as a new line in the save file.
-	global.save_game.store_line(JSON.new().stringify(save_dict))
-	global.save_game.close()
+	save_game.store_line(JSON.new().stringify(save_dict))
+	save_game.close()
 	global.reload_save_data()
 
 func load_game():
@@ -198,7 +198,7 @@ func launch_line_calc():
 	line_direction = first_click_position - mouse_position
 	# We can calculate a minimum coordinate set for the launch line to stop us scoring against ourselves
 	if line_direction.normalized().x > -0.998 and line_direction.normalized().x < 0.998 and line_direction.normalized().y < 0:
-		 reasonable_angle = true
+		reasonable_angle = true
 	else:
 		reasonable_angle = false
 

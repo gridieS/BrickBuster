@@ -134,7 +134,6 @@ func fetch_balls():
 		elif not file_name.begins_with("."):
 			var ball_scene = load(path + file_name)
 			ball_scenes.append({"filename": file_name, "ball_scene": ball_scene})
-
 	ball_scenes_dir.list_dir_end()
 
 # Gets the gamemodes according to the files found in /logic/GameModes/. 

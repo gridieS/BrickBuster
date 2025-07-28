@@ -36,19 +36,19 @@ func _ready():
 	close_timer.one_shot = true
 	close_timer.wait_time = 0.25
 	
-	var animation = Animation.new()
-	var track_index = animation.add_track(Animation.TYPE_VALUE)
-	animation.track_set_path(track_index, String(popup.get_path()) + ":modulate:a")
-	animation.track_insert_key(track_index, 0.0, 0.0)
-	animation.track_insert_key(track_index, 0.3, 1.0)
-	$AnimationPlayer.add_animation("fadein", animation)
-	
-	animation = Animation.new()
-	track_index = animation.add_track(Animation.TYPE_VALUE)
-	animation.track_set_path(track_index, str(popup.get_path()) + ":modulate:a")
-	animation.track_insert_key(track_index, 0.0, 1.0)
-	animation.track_insert_key(track_index, 0.3, 0.0)
-	$AnimationPlayer.add_animation("fadeout", animation)
+	#var animation = Animation.new()
+	#var track_index = animation.add_track(Animation.TYPE_VALUE)
+	#animation.track_set_path(track_index, String(popup.get_path()) + ":modulate:a")
+	#animation.track_insert_key(track_index, 0.0, 0.0)
+	#animation.track_insert_key(track_index, 0.3, 1.0)
+	#$AnimationPlayer.add_animation("fadein", animation)
+	#
+	#animation = Animation.new()
+	#track_index = animation.add_track(Animation.TYPE_VALUE)
+	#animation.track_set_path(track_index, str(popup.get_path()) + ":modulate:a")
+	#animation.track_insert_key(track_index, 0.0, 1.0)
+	#animation.track_insert_key(track_index, 0.3, 0.0)
+	#$AnimationPlayer.add_animation("fadeout", animation)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

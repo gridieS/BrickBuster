@@ -120,8 +120,12 @@ func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 		line_point -= 1 # Line points go top to bottom
 	elif ball_linear_velocity.y > 0 and distance_to_midcolumn_points.min() > 0:
 		line_point += 1
-	
-	var things_at_point = get_world_2d().direct_space_state.intersect_point(game_control.columns[3].get_point_position(line_point), 32)
+	var point = game_control.columns[3].get_point_position(line_point)
+	var query = PhysicsPointQueryParameters2D.new()
+	query.position = point
+	query.collide_with_areas = true
+	query.collide_with_bodies = true
+	var things_at_point = get_world_2d().direct_space_state.intersect_point(query, 32)
 	
 	if line_point < 8 and things_at_point.is_empty():
 		var bounce_request = game_control.SpecialRequest.new()

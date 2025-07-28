@@ -1,36 +1,24 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=12 format=3 uid="uid://836oelh0pr0k"]
 
-[ext_resource path="res://styling/fonts/NotoSans_Bold.tres" type="FontFile" id=1]
-[ext_resource path="res://styling/fonts/NotoSans.tres" type="FontFile" id=2]
-[ext_resource path="res://images/launchline.png" type="Texture2D" id=3]
-[ext_resource path="res://styling/button_style/CloseButton_hover.stylebox" type="StyleBox" id=4]
-[ext_resource path="res://styling/button_style/ApplyButton_hover.stylebox" type="StyleBox" id=5]
-[ext_resource path="res://styling/button_style/ApplyButton_pressed.stylebox" type="StyleBox" id=6]
-[ext_resource path="res://styling/button_style/ApplyButton_normal.stylebox" type="StyleBox" id=7]
-[ext_resource path="res://styling/button_style/CloseButton_pressed.stylebox" type="StyleBox" id=8]
-[ext_resource path="res://styling/button_style/CloseButton_normal.stylebox" type="StyleBox" id=9]
-[ext_resource path="res://logic/InstructionsMenu.gd" type="Script" id=10]
-[ext_resource path="res://images/specials.png" type="Texture2D" id=11]
+[ext_resource type="FontFile" path="res://styling/fonts/NotoSans_Bold.tres" id="1"]
+[ext_resource type="FontFile" path="res://styling/fonts/NotoSans.tres" id="2"]
+[ext_resource type="Texture2D" uid="uid://b22lwm5unxyf6" path="res://images/launchline.png" id="3"]
+[ext_resource type="StyleBox" path="res://styling/button_style/CloseButton_hover.stylebox" id="4"]
+[ext_resource type="StyleBox" path="res://styling/button_style/ApplyButton_hover.stylebox" id="5"]
+[ext_resource type="StyleBox" path="res://styling/button_style/ApplyButton_pressed.stylebox" id="6"]
+[ext_resource type="StyleBox" path="res://styling/button_style/ApplyButton_normal.stylebox" id="7"]
+[ext_resource type="StyleBox" path="res://styling/button_style/CloseButton_pressed.stylebox" id="8"]
+[ext_resource type="StyleBox" path="res://styling/button_style/CloseButton_normal.stylebox" id="9"]
+[ext_resource type="Script" uid="uid://cmax7pc3j2fbn" path="res://logic/InstructionsMenu.gd" id="10"]
+[ext_resource type="Texture2D" uid="uid://ljcqv8lr4q8p" path="res://images/specials.png" id="11"]
 
 [node name="Popup" type="Popup"]
+size = Vector2i(736, 246)
 visible = true
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -300.0
-offset_top = -600.0
-offset_right = 300.0
-offset_bottom = 600.0
-custom_minimum_size = Vector2( 640, 1200 )
-size_flags_horizontal = 3
-size_flags_vertical = 3
-script = ExtResource( 10 )
-__meta__ = {
-"_edit_use_anchors_": false
-}
+script = ExtResource("10")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 20.0
@@ -39,171 +27,122 @@ offset_right = -20.0
 offset_bottom = -20.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-__meta__ = {
-"_edit_use_anchors_": false
-}
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-offset_right = 600.0
-offset_bottom = 1160.0
+layout_mode = 2
 
 [node name="HeaderLabel" type="Label" parent="MarginContainer/VBoxContainer"]
-offset_right = 600.0
-offset_bottom = 58.0
-theme_override_fonts/font = ExtResource( 1 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1")
 text = "Instructions"
-align = 1
-__meta__ = {
-"_edit_use_anchors_": false
-}
+horizontal_alignment = 1
 
 [node name="TabContainer" type="TabContainer" parent="MarginContainer/VBoxContainer"]
-offset_top = 62.0
-offset_right = 600.0
-offset_bottom = 1098.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+current_tab = 0
 tabs_visible = false
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer"]
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 8.0
-offset_right = -4.0
-offset_bottom = -4.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 20
-__meta__ = {
-"_edit_use_anchors_": false
-}
+metadata/_tab_index = 0
 
 [node name="Label1" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/VBoxContainer"]
-offset_right = 592.0
-offset_bottom = 119.0
-theme_override_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "In BrickBuster, you shoot balls to bust bricks."
-autowrap = true
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/VBoxContainer"]
-offset_top = 139.0
-offset_right = 592.0
-offset_bottom = 380.0
-theme_override_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "Tap and drag to direct your balls. A launch line will appear to show you where your balls will go."
-autowrap = true
 
 [node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/VBoxContainer"]
-offset_top = 400.0
-offset_right = 592.0
-offset_bottom = 519.0
-theme_override_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
 text = "Once you release, the balls will be launched!"
-autowrap = true
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/TabContainer/VBoxContainer"]
-offset_top = 539.0
-offset_right = 592.0
-offset_bottom = 946.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 3 )
-expand = true
+texture = ExtResource("3")
+expand_mode = 1
 stretch_mode = 6
 
 [node name="NextButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/VBoxContainer"]
-offset_top = 966.0
-offset_right = 592.0
-offset_bottom = 1024.0
-theme_override_styles/hover = ExtResource( 5 )
-theme_override_styles/pressed = ExtResource( 6 )
-theme_override_styles/normal = ExtResource( 7 )
-theme_override_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_styles/hover = ExtResource("5")
+theme_override_styles/pressed = ExtResource("6")
+theme_override_styles/normal = ExtResource("7")
 text = "Next"
 
 [node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/TabContainer"]
 visible = false
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 4.0
-offset_top = 8.0
-offset_right = -4.0
-offset_bottom = -4.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_constants/separation = 20
+metadata/_tab_index = 1
 
 [node name="Label1" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/VBoxContainer2"]
-offset_right = 592.0
-offset_bottom = 119.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-theme_override_fonts/font = ExtResource( 2 )
+theme_override_fonts/font = ExtResource("2")
 text = "Ring-shaped specials will appear during the game. "
-autowrap = true
 
 [node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/VBoxContainer2"]
-offset_top = 139.0
-offset_right = 592.0
-offset_bottom = 258.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-theme_override_fonts/font = ExtResource( 2 )
-theme_override_colors/font_color = Color( 0, 1, 0, 1 )
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_fonts/font = ExtResource("2")
 text = "Adders give one more ball for your next launch."
-autowrap = true
 
 [node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/VBoxContainer2"]
-offset_top = 278.0
-offset_right = 592.0
-offset_bottom = 397.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-theme_override_fonts/font = ExtResource( 2 )
-theme_override_colors/font_color = Color( 1, 0, 1, 1 )
+theme_override_colors/font_color = Color(1, 0, 1, 1)
+theme_override_fonts/font = ExtResource("2")
 text = "Bouncers launch your balls in random directions."
-autowrap = true
 
 [node name="Label4" type="Label" parent="MarginContainer/VBoxContainer/TabContainer/VBoxContainer2"]
-offset_top = 417.0
-offset_right = 592.0
-offset_bottom = 597.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 1
-theme_override_fonts/font = ExtResource( 2 )
-theme_override_colors/font_color = Color( 1, 0, 0, 1 )
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2")
 text = "Laser specials shoot lasers across the screen, damaging bricks."
-autowrap = true
 
 [node name="TextureRect" type="TextureRect" parent="MarginContainer/VBoxContainer/TabContainer/VBoxContainer2"]
-offset_top = 617.0
-offset_right = 592.0
-offset_bottom = 946.0
+layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-texture = ExtResource( 11 )
-expand = true
+texture = ExtResource("11")
+expand_mode = 1
 stretch_mode = 6
 
 [node name="PrevButton" type="Button" parent="MarginContainer/VBoxContainer/TabContainer/VBoxContainer2"]
-offset_top = 966.0
-offset_right = 592.0
-offset_bottom = 1024.0
-theme_override_styles/hover = ExtResource( 5 )
-theme_override_styles/pressed = ExtResource( 6 )
-theme_override_styles/normal = ExtResource( 7 )
-theme_override_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_styles/hover = ExtResource("5")
+theme_override_styles/pressed = ExtResource("6")
+theme_override_styles/normal = ExtResource("7")
 text = "Previous"
 
 [node name="CloseButton" type="Button" parent="MarginContainer/VBoxContainer"]
-offset_top = 1102.0
-offset_right = 600.0
-offset_bottom = 1160.0
-theme_override_styles/hover = ExtResource( 4 )
-theme_override_styles/pressed = ExtResource( 8 )
-theme_override_styles/normal = ExtResource( 9 )
-theme_override_fonts/font = ExtResource( 2 )
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2")
+theme_override_styles/hover = ExtResource("4")
+theme_override_styles/pressed = ExtResource("8")
+theme_override_styles/normal = ExtResource("9")
 text = "Close"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
