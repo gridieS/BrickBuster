@@ -47,12 +47,14 @@ func _ready():
 		ball_list.set_item_custom_bg_color(0, Color("red", 1))
 		ball_list.set_item_custom_fg_color(0, Color("white", 1))
 	
+	var animation_library = AnimationLibrary.new()
 	var animation = Animation.new()
 	var track_index = animation.add_track(Animation.TYPE_VALUE)
 	animation.track_set_path(track_index, str(self.get_path()) + ":modulate:a")
 	animation.track_insert_key(track_index, 0.0, 1.0)
 	animation.track_insert_key(track_index, 0.3, 0.0)
-	$AnimationPlayer.add_animation("fadeout", animation)
+	animation_library.add_animation("fadeout", animation)
+	$AnimationPlayer.add_animation_library("fadeout", animation_library)
 	$AnimationPlayer.connect("animation_finished", Callable(self, "on_Fadeout_finished"))
 
 

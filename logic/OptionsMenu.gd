@@ -29,7 +29,7 @@ func _ready():
 		if global.config.get_value("audio", "volume") == 0:
 			audio_switch.button_pressed = false
 	
-	volume_slider.visible = audio_switch.pressed
+	volume_slider.visible = audio_switch.button_pressed
 	
 	var iterator = 0
 	var gradient = Gradient.new()
@@ -59,12 +59,15 @@ func _ready():
 	
 	line_color_picker.color = Color(global.config.get_value("theme", "launch_line_color"))
 	
+
+	var animation_library = AnimationLibrary.new()
 	var animation = Animation.new()
 	var track_index = animation.add_track(Animation.TYPE_VALUE)
-	animation.track_set_path(track_index, str(self.get_path()) + ":modulate:a")
+	animation.track_set_path(track_index, String(self.get_path()) + ":modulate:a")
 	animation.track_insert_key(track_index, 0.0, 1.0)
 	animation.track_insert_key(track_index, 0.3, 0.0)
-	$AnimationPlayer.add_animation("fadeout", animation)
+	animation_library.add_animation("fadeout", animation)
+	$AnimationPlayer.add_animation_library("fadeout", animation_library)
 	$AnimationPlayer.connect("animation_finished", Callable(self, "on_Fadeout_finished"))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -127,7 +130,7 @@ func on_Fadeout_finished(_anim_name):
 	hide()
 
 func _on_AudioSwitch_pressed():
-	volume_slider.visible = audio_switch.pressed
+	volume_slider.visible = audio_switch.button_pressed
 	
 	if volume_slider.visible:
 		volume_slider.value = 100
