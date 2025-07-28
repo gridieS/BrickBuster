@@ -40,12 +40,12 @@ func _ready():
 		
 		# Highlight the selected ball
 		if ball_filename == global.config.get_value("ball", "ball_file_name"):
-			ball_list.set_item_custom_bg_color(iterator, ColorN("red", 1))
-			ball_list.set_item_custom_fg_color(iterator, ColorN("white", 1))
+			ball_list.set_item_custom_bg_color(iterator, Color("red", 1))
+			ball_list.set_item_custom_fg_color(iterator, Color("white", 1))
 		iterator += 1
 	if global.config.get_value("ball", "ball_file_name") == null:
-		ball_list.set_item_custom_bg_color(0, ColorN("red", 1))
-		ball_list.set_item_custom_fg_color(0, ColorN("white", 1))
+		ball_list.set_item_custom_bg_color(0, Color("red", 1))
+		ball_list.set_item_custom_fg_color(0, Color("white", 1))
 	
 	var animation = Animation.new()
 	var track_index = animation.add_track(Animation.TYPE_VALUE)
@@ -69,8 +69,8 @@ func _on_ApplyButton_pressed():
 		elif ball_list.is_anything_selected():
 			global.config.set_value("ball", "ball_file_name", ball_list.get_item_metadata(ball_list.get_selected_items()[0]))
 			for item_index in ball_list.get_item_count():
-				 ball_list.set_item_custom_bg_color(item_index, ColorN("red", 0))
-			ball_list.set_item_custom_bg_color(ball_list.get_selected_items()[0], ColorN("red", 1))
+				ball_list.set_item_custom_bg_color(item_index, Color("red", 0))
+			ball_list.set_item_custom_bg_color(ball_list.get_selected_items()[0], Color("red", 1))
 			ball_list.deselect_all()
 		
 		global.config.save("user://settings.cfg")
