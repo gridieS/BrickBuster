@@ -62,25 +62,25 @@ var ball_color = "#ffffff"
 
 var ball = null
 
-onready var global = get_node("/root/Global")
-onready var meta_area = $Board/CanvasLayer/MetaArea
-onready var bottom_panel = $Board/CanvasLayer/BottomPanel
-onready var current_score_label = $Board/CanvasLayer/MetaArea/MarginContainer/HBoxContainer/CurrentScoreLabel
-onready var high_score_label = $Board/CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/HighScoreLabel
-onready var ammo_label = $Board/CanvasLayer/BottomPanel/CenterContainer/AmmoLabel
-onready var game_over_label = $Board/CanvasLayer/GameOverLabel
-onready var brick_scene = load("res://scenes/Brick.tscn")
-onready var slanted_brick_scene = load("res://scenes/SlantedBrick.tscn")
-onready var specials_scene = load("res://scenes/Specials.tscn")
-onready var laserbeam_scene = load("res://scenes/LaserBeam.tscn")
+@onready var global = get_node("/root/Global")
+@onready var meta_area = $Board/CanvasLayer/MetaArea
+@onready var bottom_panel = $Board/CanvasLayer/BottomPanel
+@onready var current_score_label = $Board/CanvasLayer/MetaArea/MarginContainer/HBoxContainer/CurrentScoreLabel
+@onready var high_score_label = $Board/CanvasLayer/MetaArea/MarginContainer/HBoxContainer/VBoxContainer/HighScoreLabel
+@onready var ammo_label = $Board/CanvasLayer/BottomPanel/CenterContainer/AmmoLabel
+@onready var game_over_label = $Board/CanvasLayer/GameOverLabel
+@onready var brick_scene = load("res://scenes/Brick.tscn")
+@onready var slanted_brick_scene = load("res://scenes/SlantedBrick.tscn")
+@onready var specials_scene = load("res://scenes/Specials.tscn")
+@onready var laserbeam_scene = load("res://scenes/LaserBeam.tscn")
 # We use a ball instance to mark where our balls will launch from.
 # This ball remains throughout the game, 
 # moving position to where the last ball of the last round fell.
-onready var launch_line = $Board/CanvasLayer/LaunchLine
-onready var launch_line_raycast = $Board/LaunchRayCast2D
-onready var launch_cadence_wait = $Board/LaunchCadenceTimer
-onready var game_over_timer = $Board/GameOverTimer
-onready var columns = [
+@onready var launch_line = $Board/CanvasLayer/LaunchLine
+@onready var launch_line_raycast = $Board/LaunchRayCast2D
+@onready var launch_cadence_wait = $Board/LaunchCadenceTimer
+@onready var game_over_timer = $Board/GameOverTimer
+@onready var columns = [
 	$Board/Column0,
 	$Board/Column1,
 	$Board/Column2,
@@ -150,7 +150,7 @@ func save():
 	global.save_game.open("user://savegame.save", File.WRITE)
 	
 	# Store the save dictionary as a new line in the save file.
-	global.save_game.store_line(to_json(save_dict))
+	global.save_game.store_line(JSON.new().stringify(save_dict))
 	global.save_game.close()
 	global.reload_save_data()
 
@@ -204,7 +204,7 @@ func launch_line_calc():
 
 func setup_line():
 	launch_line_raycast.position = ball.position
-	launch_line_raycast.cast_to = line_direction.normalized()*100000
+	launch_line_raycast.target_position = line_direction.normalized()*100000
 	launch_line.set_point_position(0, ball.position)
 	launch_line.set_point_position(1, launch_line_raycast.get_collision_point())
 	if launch_line.modulate.a < 1:
@@ -213,17 +213,17 @@ func setup_line():
 func launch_balls(direction = line_direction.normalized(), amount = ammo):
 	all_balls_launched = false
 	for i in amount:
-		var next_ball = global.selected_ball_scene.instance()
-		next_ball.get_node("Light2D").enabled = lighting_enabled
+		var next_ball = global.selected_ball_scene.instantiate()
+		next_ball.get_node("PointLight2D").enabled = lighting_enabled
 		next_ball.set_color(ball_color)
 		add_child(next_ball)
-		next_ball.connect("ball_no_contact_timeout", self, "on_ball_no_contact_timeout")
-		next_ball.connect("ball_died", self, "on_ball_died")
+		next_ball.connect("ball_no_contact_timeout", Callable(self, "on_ball_no_contact_timeout"))
+		next_ball.connect("ball_died", Callable(self, "on_ball_died"))
 		next_ball.position = ball.position
 		next_ball.launch(direction)
 		live_balls.append(next_ball)
 		launch_cadence_wait.start()
-		yield(launch_cadence_wait, "timeout")
+		await launch_cadence_wait.timeout
 	all_balls_launched = true
 
 func new_destroyable(destroyable_request, game_mode = "standard"):
@@ -233,14 +233,14 @@ func new_destroyable(destroyable_request, game_mode = "standard"):
 		
 		if request_type == "BrickRequest":
 			if destroyable_request.shape == "SlantedBrick":
-				next_destroyable = slanted_brick_scene.instance()
+				next_destroyable = slanted_brick_scene.instantiate()
 				if destroyable_request.rotation_degrees == null:
 					global.rng.randomize()
 					next_destroyable.rotation_degrees = global.rng.randi_range(0,3) * 90
 				else:
 					next_destroyable.rotation_degrees = rotation_degrees
 			else:
-				next_destroyable = brick_scene.instance()
+				next_destroyable = brick_scene.instantiate()
 			
 			next_destroyable.mega = destroyable_request.mega
 			if destroyable_request.mega and destroyable_request.from_save:
@@ -248,15 +248,15 @@ func new_destroyable(destroyable_request, game_mode = "standard"):
 			else:
 				next_destroyable.health = destroyable_request.health
 			next_destroyable.max_possible_health = score + 1
-			next_destroyable.connect("brick_killed", self, "on_destroyable_killed")
+			next_destroyable.connect("brick_killed", Callable(self, "on_destroyable_killed"))
 			
 		elif request_type == "SpecialRequest":
-			next_destroyable = specials_scene.instance()
-			next_destroyable.get_node("Light2D").enabled = lighting_enabled
+			next_destroyable = specials_scene.instantiate()
+			next_destroyable.get_node("PointLight2D").enabled = lighting_enabled
 			next_destroyable.mode = destroyable_request.mode
 			next_destroyable.laserbeam_direction = destroyable_request.laserbeam_direction
-			next_destroyable.connect("special_area_entered", self, "on_special_area_entered")
-			next_destroyable.connect("special_killed", self, "on_destroyable_killed")
+			next_destroyable.connect("special_area_entered", Callable(self, "on_special_area_entered"))
+			next_destroyable.connect("special_killed", Callable(self, "on_destroyable_killed"))
 		
 		next_destroyable.column_num = destroyable_request.column_num
 		next_destroyable.column_vert_point = destroyable_request.column_vert_point
@@ -359,7 +359,7 @@ func update_score_labels():
 	ammo_label.text = "x" + str(ammo)
 	current_score_label.text = str(score)
 	var past_scores = global.save_game_data.past_scores
-	if not past_scores.has(game_mode) or past_scores[game_mode].empty() or score > past_scores[game_mode].max():
+	if not past_scores.has(game_mode) or past_scores[game_mode].is_empty() or score > past_scores[game_mode].max():
 		high_score_label.text = str(score)
 	else:
 		high_score_label.text = str(past_scores[game_mode].max())
@@ -371,7 +371,7 @@ func game_over_title_fadein_and_fadeout_init():
 	elif not game_over_on_screen:
 		game_over_on_screen = true
 		game_over_timer.start()
-		yield(game_over_timer, "timeout")
+		await game_over_timer.timeout
 		game_over_fadeout = true
 		
 func game_over_title_fadeout_and_reset():
@@ -388,7 +388,7 @@ func end_game():
 
 func reset():
 	$AnimationPlayer.play("fadeout")
-	yield($AnimationPlayer, "animation_finished")
+	await $AnimationPlayer.animation_finished
 	if score != 0:
 		if global.save_game_data.past_scores.has($GameModeSelector.selected_game_mode):
 			global.save_game_data.past_scores[$GameModeSelector.selected_game_mode].append(score)
@@ -440,8 +440,8 @@ func on_restart_button_clicked():
 
 func on_quit_to_menu_button_clicked():
 	$AnimationPlayer.play("fadeout")
-	yield($AnimationPlayer, "animation_finished")
-	get_tree().change_scene("res://scenes/MainMenu.tscn")
+	await $AnimationPlayer.animation_finished
+	get_tree().change_scene_to_file("res://scenes/MainMenu.tscn")
 
 func on_destroyable_killed(destroyable):
 	live_destroyables.erase(destroyable)
@@ -450,7 +450,7 @@ func on_special_area_entered(special):
 	if special.mode == "add-ball":
 		ammo += 1
 	if special.mode == "laser":
-		var laserbeam = laserbeam_scene.instance()
+		var laserbeam = laserbeam_scene.instantiate()
 		if special.laserbeam_direction == "vertical":
 			laserbeam.position = Vector2(special.global_position.x, 0)
 			laserbeam.rotation_degrees = 90
@@ -482,25 +482,25 @@ func _on_ControlArea_mouse_exited():
 # <--------------------------- STANDARD GAME FUNCS --------------------------->
 func _ready():
 	if global.err == OK:
-		ball = global.selected_ball_scene.instance()
+		ball = global.selected_ball_scene.instantiate()
 		lighting_enabled = global.config.get_value("lighting", "enabled")
 		ball_color = global.config.get_value("ball", "color")
 	else: # Emergency defaults
-		ball = load("res://scenes/Balls/Ball.tscn").instance()
+		ball = load("res://scenes/Balls/Ball.tscn").instantiate()
 		lighting_enabled = false
 		ball_color = "#ffffff"
 	ball.marker_ball = true
 	
-	meta_area.pause_mode = Node.PAUSE_MODE_PROCESS
-	meta_area.connect("pause_menu_toggled", self, "on_pause_menu_toggled")
-	meta_area.connect("restart_button_clicked", self, "on_restart_button_clicked")
-	meta_area.connect("quit_to_menu_button_clicked", self, "on_quit_to_menu_button_clicked")
+	meta_area.process_mode = Node.PROCESS_MODE_ALWAYS
+	meta_area.connect("pause_menu_toggled", Callable(self, "on_pause_menu_toggled"))
+	meta_area.connect("restart_button_clicked", Callable(self, "on_restart_button_clicked"))
+	meta_area.connect("quit_to_menu_button_clicked", Callable(self, "on_quit_to_menu_button_clicked"))
 	
 	launch_line.add_point(Vector2(0,0), 0)
 	launch_line.add_point(Vector2(0,0), 1)
 	launch_line.default_color = global.config.get_value("theme", "launch_line_color")
 	launch_line_raycast.add_exception(ball)
-	ball.get_node("Light2D").enabled = lighting_enabled
+	ball.get_node("PointLight2D").enabled = lighting_enabled
 	ball.set_color(ball_color)
 	add_child(ball)
 	
@@ -514,7 +514,7 @@ func _ready():
 	if global.first_run:
 		meta_area.help_popup.visible = true
 		get_tree().paused = true
-		meta_area.help_popup.connect("visibility_changed", self, "on_help_menu_visibility_changed")
+		meta_area.help_popup.connect("visibility_changed", Callable(self, "on_help_menu_visibility_changed"))
 
 func _process(_delta):
 

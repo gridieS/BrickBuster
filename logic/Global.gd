@@ -69,7 +69,9 @@ var selected_mega_theme = "supernova"
 
 func reload_save_data():
 	save_game.open("user://savegame.save", File.READ)
-	save_game_data = parse_json(save_game.get_line())
+	var test_json_conv = JSON.new()
+	test_json_conv.parse(save_game.get_line())
+	save_game_data = test_json_conv.get_data()
 	save_game.close()
 
 func reload_selected_ball():
@@ -92,7 +94,7 @@ func convert_past_scores(in_past_scores):
 	}
 	
 	save_game.open("user://savegame.save", File.WRITE)
-	save_game.store_line(to_json(save_dict))
+	save_game.store_line(JSON.new().stringify(save_dict))
 	save_game.close()
 	reload_save_data()
 	return new_type_scores
@@ -116,16 +118,16 @@ func write_save_file(game_mode = "standard", first_save = false):
 		save_dict["past_scores"] = save_game_data["past_scores"]
 	
 	save_game.open("user://savegame.save", File.WRITE)
-	save_game.store_line(to_json(save_dict))
+	save_game.store_line(JSON.new().stringify(save_dict))
 	save_game.close()
 	reload_save_data()
 
 # Gets the balls according to the files found in /scenes/Balls/. 
 func fetch_balls():
-	var ball_scenes_dir = Directory.new()
+	var ball_scenes_dir = DirAccess.new()
 	var path = "res://scenes/Balls/"
 	ball_scenes_dir.open(path)
-	ball_scenes_dir.list_dir_begin()
+	ball_scenes_dir.list_dir_begin() # TODOConverter3To4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 
 	while true:
 		var file_name = ball_scenes_dir.get_next()
@@ -139,10 +141,10 @@ func fetch_balls():
 
 # Gets the gamemodes according to the files found in /logic/GameModes/. 
 func fetch_game_modes():
-	var game_modes_dir = Directory.new()
+	var game_modes_dir = DirAccess.new()
 	var path = "res://logic/GameModes/"
 	game_modes_dir.open(path)
-	game_modes_dir.list_dir_begin()
+	game_modes_dir.list_dir_begin() # TODOConverter3To4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 
 	while true:
 		var file_name = game_modes_dir.get_next()

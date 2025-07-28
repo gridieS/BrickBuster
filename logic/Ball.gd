@@ -10,17 +10,17 @@ signal ball_died(ball)
 # var a = 2
 # var b = "text"
 
-export var speed = 250
+@export var speed = 250
 var ball_color = "#ffffff"
 var marker_ball = false
 
 func launch (vector):
-	apply_impulse(Vector2(0,0), vector.normalized() * speed)
+	apply_impulse(vector.normalized() * speed, Vector2(0,0))
 	$LaunchAudio.play()
 
 func set_color(color):
 	ball_color = color
-	$Light2D.color = color
+	$PointLight2D.color = color
 	if ($MetaNode.ball_name == "Standard ball"):
 		update()
 	else:

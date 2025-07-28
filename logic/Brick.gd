@@ -1,4 +1,4 @@
-extends KinematicBody2D
+extends CharacterBody2D
 
 # This script controls a brick's behaviour and how it's appearance changes
 # when it is hit by a ball or when it is killed.
@@ -15,10 +15,10 @@ var column_vert_point = null
 
 var gradient = Gradient.new()
 
-onready var global = get_node("/root/Global")
-onready var brick_shape = $BrickShape
-onready var label = $HealthLabel
-onready var timer = $Timer
+@onready var global = get_node("/root/Global")
+@onready var brick_shape = $BrickShape
+@onready var label = $HealthLabel
+@onready var timer = $Timer
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -36,8 +36,8 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
 	label.text = str(health)
-	brick_shape.color = gradient.interpolate(float(health)/float(max_possible_health))
-	$Light2D.color = brick_shape.color
+	brick_shape.color = gradient.sample(float(health)/float(max_possible_health))
+	$PointLight2D.color = brick_shape.color
 	
 	if health <= 0:
 		$Collision2D.disabled = true

@@ -15,8 +15,8 @@ var repositioning_bricks = false
 var ball_repositioned_this_round = false
 var round_first_dead_ball_position = null
 
-onready var global = get_node("/root/Global")
-onready var game_control = get_tree().get_root().get_node("MainGame")
+@onready var global = get_node("/root/Global")
+@onready var game_control = get_tree().get_root().get_node("MainGame")
 
 func new_destroyable_line(health, vert_point = 0):
 	var rng = global.rng
@@ -46,7 +46,7 @@ func new_destroyable_line(health, vert_point = 0):
 	free_columns.erase(add_ball_special_column)
 	
 	rng.randomize()
-	if not free_columns.empty() and rng.randi_range(0, 4) == 4:
+	if not free_columns.is_empty() and rng.randi_range(0, 4) == 4:
 		game_control.add_special_on_line(free_columns, vert_point)
 
 func round_over_checks():
@@ -123,7 +123,7 @@ func on_ball_no_contact_timeout(ball_position, ball_linear_velocity):
 	
 	var things_at_point = get_world_2d().direct_space_state.intersect_point(game_control.columns[3].get_point_position(line_point), 32, [], 1, true, true)
 	
-	if line_point < 8 and things_at_point.empty():
+	if line_point < 8 and things_at_point.is_empty():
 		var bounce_request = game_control.SpecialRequest.new()
 		bounce_request.column_vert_point = line_point
 		bounce_request.column_num = 3
@@ -138,16 +138,16 @@ func on_reset_triggered():
 # <--------------------------- STANDARD GAME FUNCS --------------------------->
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	game_control.connect("ball_no_contact_timeout", self, "on_ball_no_contact_timeout")
-	game_control.connect("reset_triggered", self, "on_reset_triggered")
-	game_control.connect("ball_died", self, "on_ball_died")
+	game_control.connect("ball_no_contact_timeout", Callable(self, "on_ball_no_contact_timeout"))
+	game_control.connect("reset_triggered", Callable(self, "on_reset_triggered"))
+	game_control.connect("ball_died", Callable(self, "on_ball_died"))
 	
 	if not global.save_game_data:
 		game_control.rng.randomize()
 		game_control.new_destroyable_line(game_control.score + 1)
 	else:
 		game_control.load_game()
-		if game_control.live_destroyables.empty():
+		if game_control.live_destroyables.is_empty():
 			# Caused by 'new game' from main menu, impossible in normal game flow.
 			new_destroyable_line(game_control.score + 1)
 	
@@ -164,7 +164,7 @@ func _process(delta):
 			if game_control.ball.position.x == round_first_dead_ball_position.x:
 				round_first_dead_ball_position = null
 				ball_repositioned_this_round = true
-		if not game_control.live_balls.empty():
+		if not game_control.live_balls.is_empty():
 			game_control.round_in_progress = true
 		# <--------------------- END OF ROUND PROCESSING --------------------->
 		elif game_control.launched:

@@ -1,6 +1,6 @@
 [gd_scene load_steps=11 format=2]
 
-[ext_resource path="res://styling/fonts/NotoSans.tres" type="DynamicFont" id=1]
+[ext_resource path="res://styling/fonts/NotoSans.tres" type="FontFile" id=1]
 [ext_resource path="res://logic/BallSelector.gd" type="Script" id=2]
 [ext_resource path="res://styling/button_style/CloseButton_pressed.stylebox" type="StyleBox" id=3]
 [ext_resource path="res://styling/button_style/CloseButton_hover.stylebox" type="StyleBox" id=4]
@@ -8,7 +8,7 @@
 [ext_resource path="res://styling/button_style/ApplyButton_hover.stylebox" type="StyleBox" id=6]
 [ext_resource path="res://styling/button_style/ApplyButton_pressed.stylebox" type="StyleBox" id=7]
 [ext_resource path="res://styling/button_style/ApplyButton_normal.stylebox" type="StyleBox" id=8]
-[ext_resource path="res://styling/fonts/NotoSans_Bold.tres" type="DynamicFont" id=9]
+[ext_resource path="res://styling/fonts/NotoSans_Bold.tres" type="FontFile" id=9]
 
 [sub_resource type="Theme" id=1]
 default_font = ExtResource( 1 )
@@ -19,13 +19,13 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-margin_left = -340.0
-margin_top = -400.0
-margin_right = 340.0
-margin_bottom = 400.0
+offset_left = -340.0
+offset_top = -400.0
+offset_right = 340.0
+offset_bottom = 400.0
 grow_horizontal = 2
 grow_vertical = 2
-rect_min_size = Vector2( 400, 1000 )
+custom_minimum_size = Vector2( 400, 1000 )
 script = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -34,7 +34,7 @@ __meta__ = {
 [node name="Panel" type="Panel" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_top = 103.0
+offset_top = 103.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -47,13 +47,13 @@ __meta__ = {
 }
 
 [node name="TabContainer" type="TabContainer" parent="VBoxContainer"]
-margin_right = 680.0
-margin_bottom = 876.0
+offset_right = 680.0
+offset_bottom = 876.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 1 )
+theme_override_fonts/font = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -61,96 +61,96 @@ __meta__ = {
 [node name="BallPicker" type="MarginContainer" parent="VBoxContainer/TabContainer"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 76.0
-margin_right = -4.0
-margin_bottom = -4.0
+offset_left = 4.0
+offset_top = 76.0
+offset_right = -4.0
+offset_bottom = -4.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/TabContainer/BallPicker"]
-margin_right = 672.0
-margin_bottom = 796.0
+offset_right = 672.0
+offset_bottom = 796.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
 [node name="ItemList" type="ItemList" parent="VBoxContainer/TabContainer/BallPicker/ScrollContainer"]
-margin_right = 672.0
-margin_bottom = 796.0
+offset_right = 672.0
+offset_bottom = 796.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_fonts/font = ExtResource( 1 )
+theme_override_fonts/font = ExtResource( 1 )
 fixed_icon_size = Vector2( 25, 25 )
 
 [node name="ColourMenu" type="MarginContainer" parent="VBoxContainer/TabContainer"]
 visible = false
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 4.0
-margin_top = 76.0
-margin_right = -4.0
-margin_bottom = -4.0
+offset_left = 4.0
+offset_top = 76.0
+offset_right = -4.0
+offset_bottom = -4.0
 theme = SubResource( 1 )
 
 [node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/TabContainer/ColourMenu"]
-margin_right = 672.0
-margin_bottom = 796.0
+offset_right = 672.0
+offset_bottom = 796.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="ColorPicker" type="ColorPicker" parent="VBoxContainer/TabContainer/ColourMenu/VBoxContainer"]
-margin_right = 672.0
-margin_bottom = 796.0
+offset_right = 672.0
+offset_bottom = 796.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 edit_alpha = false
 
 [node name="MarginContainer" type="MarginContainer" parent="VBoxContainer"]
-margin_top = 880.0
-margin_right = 680.0
-margin_bottom = 938.0
-custom_constants/margin_right = 20
-custom_constants/margin_left = 20
+offset_top = 880.0
+offset_right = 680.0
+offset_bottom = 938.0
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_left = 20
 
 [node name="Label" type="Label" parent="VBoxContainer/MarginContainer"]
-margin_left = 20.0
-margin_right = 660.0
-margin_bottom = 58.0
+offset_left = 20.0
+offset_right = 660.0
+offset_bottom = 58.0
 size_flags_horizontal = 3
-custom_fonts/font = ExtResource( 9 )
+theme_override_fonts/font = ExtResource( 9 )
 autowrap = true
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 942.0
-margin_right = 680.0
-margin_bottom = 1000.0
+offset_top = 942.0
+offset_right = 680.0
+offset_bottom = 1000.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ApplyButton" type="Button" parent="VBoxContainer/HBoxContainer"]
-margin_right = 338.0
-margin_bottom = 58.0
+offset_right = 338.0
+offset_bottom = 58.0
 size_flags_horizontal = 3
-custom_styles/hover = ExtResource( 6 )
-custom_styles/pressed = ExtResource( 7 )
-custom_styles/normal = ExtResource( 8 )
-custom_fonts/font = ExtResource( 1 )
+theme_override_styles/hover = ExtResource( 6 )
+theme_override_styles/pressed = ExtResource( 7 )
+theme_override_styles/normal = ExtResource( 8 )
+theme_override_fonts/font = ExtResource( 1 )
 text = "Apply"
 
 [node name="CloseButton" type="Button" parent="VBoxContainer/HBoxContainer"]
-margin_left = 342.0
-margin_right = 680.0
-margin_bottom = 58.0
+offset_left = 342.0
+offset_right = 680.0
+offset_bottom = 58.0
 size_flags_horizontal = 3
-custom_styles/hover = ExtResource( 4 )
-custom_styles/pressed = ExtResource( 3 )
-custom_styles/normal = ExtResource( 5 )
-custom_fonts/font = ExtResource( 1 )
+theme_override_styles/hover = ExtResource( 4 )
+theme_override_styles/pressed = ExtResource( 3 )
+theme_override_styles/normal = ExtResource( 5 )
+theme_override_fonts/font = ExtResource( 1 )
 text = "Close"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]

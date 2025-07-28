@@ -11,7 +11,7 @@ func _ready():
 	animation.track_insert_key(track_index, 0.0, 1.0)
 	animation.track_insert_key(track_index, 0.3, 0.0)
 	$AnimationPlayer.add_animation("fadeout", animation)
-	$AnimationPlayer.connect("animation_finished", self, "on_Fadeout_finished")
+	$AnimationPlayer.connect("animation_finished", Callable(self, "on_Fadeout_finished"))
 
 func _on_CloseButton_pressed():
 	$AnimationPlayer.play("fadeout")

@@ -30,7 +30,7 @@ func kill():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	$Light2D.color = colors[mode]
+	$PointLight2D.color = colors[mode]
 	if mode == "laser":
 		$Line2D.visible = true
 		if laserbeam_direction == "vertical":
@@ -50,7 +50,7 @@ func _on_Special_body_entered(body):
 		if mode == "add-ball":
 			$AddBallAudio.play()
 			$CollisionShape2D.set_deferred("disabled", true)
-			$Light2D.enabled = false
+			$PointLight2D.enabled = false
 			modulate.a = 0
 			# We don't kill the object here because it will cut off our audio
 		if mode == "bounce":

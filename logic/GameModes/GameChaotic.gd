@@ -4,8 +4,8 @@ extends Node2D
 # Time-based survival gamemode where the player has to survive as long as
 # possible with bricks constantly moving down the screen.
 
-onready var global = get_node("/root/Global")
-onready var game_control = get_tree().get_root().get_node("MainGame")
+@onready var global = get_node("/root/Global")
+@onready var game_control = get_tree().get_root().get_node("MainGame")
 
 # Declare member variables here. Examples:
 # var a = 2
@@ -61,7 +61,7 @@ func new_destroyable_line(health, vert_point = 0):
 	free_columns.erase(add_ball_special_column)
 	
 	rng.randomize()
-	if not free_columns.empty() and rng.randi_range(0, 2) == 2:
+	if not free_columns.is_empty() and rng.randi_range(0, 2) == 2:
 		game_control.add_special_on_line(free_columns, vert_point)
 
 func on_launch_cooldown_timer_timeout():
@@ -84,13 +84,13 @@ func on_score_increase_timer_timeout():
 func _ready():
 	game_control.ball.get_node("CollisionThing2D").disabled = true
 	
-	launch_cooldown_timer.connect("timeout", self, "on_launch_cooldown_timer_timeout")
+	launch_cooldown_timer.connect("timeout", Callable(self, "on_launch_cooldown_timer_timeout"))
 	launch_cooldown_timer.wait_time = 3.4 # When rounded still says 3
 	launch_cooldown_timer.autostart = true
 	launch_cooldown_timer.one_shot = true
 	add_child(launch_cooldown_timer)
 	
-	score_increase_timer.connect("timeout", self, "on_score_increase_timer_timeout")
+	score_increase_timer.connect("timeout", Callable(self, "on_score_increase_timer_timeout"))
 	score_increase_timer.wait_time = 5
 	add_child(score_increase_timer)
 	
@@ -98,7 +98,7 @@ func _ready():
 	countdown_label.grow_vertical = Control.GROW_DIRECTION_BOTH
 	countdown_label.anchor_left = 0.5
 	countdown_label.anchor_top = 0.5
-	countdown_label.set("custom_fonts/font", global.noto_font_bold_title)
+	countdown_label.set("theme_override_fonts/font", global.noto_font_bold_title)
 	$CanvasLayer.add_child(countdown_label)
 	$CanvasLayer.move_child(countdown_label, 0)
 	
@@ -118,7 +118,7 @@ func _ready():
 		game_control.new_destroyable_line(game_control.score + 1)
 	else:
 		game_control.load_game()
-		if game_control.live_destroyables.empty():
+		if game_control.live_destroyables.is_empty():
 			# Caused by 'new game' from main menu, impossible in normal game flow.
 			new_destroyable_line(game_control.score + 1)
 	game_control.update_score_labels()

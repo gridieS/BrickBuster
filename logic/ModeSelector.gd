@@ -10,9 +10,9 @@ extends Node
 
 var selected_game_mode = null
 
-onready var global = get_node("/root/Global")
-onready var game_control = get_tree().get_root().get_node("MainGame")
-onready var board = get_parent().get_node("Board")
+@onready var global = get_node("/root/Global")
+@onready var game_control = get_tree().get_root().get_node("MainGame")
+@onready var board = get_parent().get_node("Board")
 
 func on_game_prepped():
 	global.fetch_game_modes()
@@ -34,7 +34,7 @@ func on_game_prepped():
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	game_control.connect("game_prepped", self, "on_game_prepped")
+	game_control.connect("game_prepped", Callable(self, "on_game_prepped"))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):

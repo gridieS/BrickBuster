@@ -20,18 +20,18 @@ var popups = []
 
 var go_to_board = false
 
-onready var global = get_node("/root/Global")
-onready var title_brick = $TitleBrick
-onready var main_menu = $CanvasLayer/MainMenu
-onready var buttons_container = $CanvasLayer/MainMenu/VBoxContainer
-onready var new_game_button = $CanvasLayer/MainMenu/VBoxContainer/NewGameButton
-onready var continue_button = $CanvasLayer/MainMenu/VBoxContainer/ContinueButton
-onready var scores_button = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton
-onready var balls_button = $CanvasLayer/MainMenu/VBoxContainer/BallsButton
-onready var options_button = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton
-onready var donate_button = $CanvasLayer/MainMenu/VBoxContainer/DonateButton
-onready var help_button = $CanvasLayer/MainMenu/VBoxContainer/HelpButton
-onready var quit_button = $CanvasLayer/MainMenu/VBoxContainer/QuitButton
+@onready var global = get_node("/root/Global")
+@onready var title_brick = $TitleBrick
+@onready var main_menu = $CanvasLayer/MainMenu
+@onready var buttons_container = $CanvasLayer/MainMenu/VBoxContainer
+@onready var new_game_button = $CanvasLayer/MainMenu/VBoxContainer/NewGameButton
+@onready var continue_button = $CanvasLayer/MainMenu/VBoxContainer/ContinueButton
+@onready var scores_button = $CanvasLayer/MainMenu/VBoxContainer/ScoresButton
+@onready var balls_button = $CanvasLayer/MainMenu/VBoxContainer/BallsButton
+@onready var options_button = $CanvasLayer/MainMenu/VBoxContainer/OptionsButton
+@onready var donate_button = $CanvasLayer/MainMenu/VBoxContainer/DonateButton
+@onready var help_button = $CanvasLayer/MainMenu/VBoxContainer/HelpButton
+@onready var quit_button = $CanvasLayer/MainMenu/VBoxContainer/QuitButton
 
 
 func close_popups():
@@ -51,7 +51,7 @@ func set_menu_colours():
 		var new_style_hover = StyleBoxFlat.new()
 		var new_style_pressed = StyleBoxFlat.new()
 		
-		var normal_color = gradient.interpolate(float(iterator)/float(buttons_container.get_child_count()))
+		var normal_color = gradient.sample(float(iterator)/float(buttons_container.get_child_count()))
 		var hover_color = Color(normal_color.r, normal_color.g, normal_color.b, 0.8)
 		var pressed_color = Color(normal_color.r, normal_color.g, normal_color.b, 0.5)
 		
@@ -59,9 +59,9 @@ func set_menu_colours():
 		new_style_hover.set_bg_color(hover_color)
 		new_style_pressed.set_bg_color(pressed_color)
 		
-		button.set('custom_styles/normal', new_style_normal)
-		button.set('custom_styles/hover', new_style_hover)
-		button.set('custom_styles/pressed', new_style_pressed)
+		button.set('theme_override_styles/normal', new_style_normal)
+		button.set('theme_override_styles/hover', new_style_hover)
+		button.set('theme_override_styles/pressed', new_style_pressed)
 		
 		iterator += 1
 
@@ -70,14 +70,14 @@ func _ready():
 	var no_scores = true
 	if global.save_game_data and global.save_game_data.has("past_scores"):
 		for score_array in global.save_game_data["past_scores"]:
-			if not global.save_game_data["past_scores"][score_array].empty():
+			if not global.save_game_data["past_scores"][score_array].is_empty():
 				no_scores = false
 	
 	if not global.save_game_data or no_scores:
 		continue_button.visible = false
 		scores_button.disabled = true
 	
-	ball = global.selected_ball_scene.instance()
+	ball = global.selected_ball_scene.instantiate()
 	add_child(ball)
 	
 	global.rng.randomize()
@@ -86,28 +86,28 @@ func _ready():
 	title_brick.max_possible_health = 100000
 	ball.position = Vector2(512, 1216)
 	ball.launch(Vector2(global.rng.randf_range(1, -1), global.rng.randf_range(-0, -1)))
-	ball.get_node("Light2D").energy = 1
-	ball.get_node("Light2D").enabled = global.config.get_value("lighting", "enabled")
+	ball.get_node("PointLight2D").energy = 1
+	ball.get_node("PointLight2D").enabled = global.config.get_value("lighting", "enabled")
 	ball.set_color(global.config.get_value("ball", "color"))
 	
-	popup_game_mode_menu = load("res://scenes/SubMenus/GameModeMenu.tscn").instance()
+	popup_game_mode_menu = load("res://scenes/SubMenus/GameModeMenu.tscn").instantiate()
 	new_game_button.add_child(popup_game_mode_menu)
-	popup_balls_menu = load("res://scenes/SubMenus/BallMenu.tscn").instance()
+	popup_balls_menu = load("res://scenes/SubMenus/BallMenu.tscn").instantiate()
 	balls_button.add_child(popup_balls_menu)
-	popup_options_menu = load("res://scenes/SubMenus/OptionsMenu.tscn").instance()
+	popup_options_menu = load("res://scenes/SubMenus/OptionsMenu.tscn").instantiate()
 	options_button.add_child(popup_options_menu)
-	popup_score_menu = load("res://scenes/SubMenus/ScoreMenu.tscn").instance()
+	popup_score_menu = load("res://scenes/SubMenus/ScoreMenu.tscn").instantiate()
 	scores_button.add_child(popup_score_menu)
-	popup_donate_menu = load("res://scenes/SubMenus/DonateMenu.tscn").instance()
+	popup_donate_menu = load("res://scenes/SubMenus/DonateMenu.tscn").instantiate()
 	donate_button.add_child(popup_donate_menu)
-	popup_help_menu = load("res://scenes/SubMenus/Instructions.tscn").instance()
+	popup_help_menu = load("res://scenes/SubMenus/Instructions.tscn").instantiate()
 	help_button.add_child(popup_help_menu)
 	popups = [popup_game_mode_menu, popup_balls_menu, popup_options_menu, popup_score_menu, popup_donate_menu, popup_help_menu]
 	
-	popup_game_mode_menu.connect("game_mode_selected", self, "on_game_mode_selected")
-	popup_balls_menu.connect("color_changed", self, "on_color_changed")
-	popup_balls_menu.connect("ball_changed", self, "on_ball_changed")
-	popup_options_menu.connect("options_changed", self, "on_options_changed")
+	popup_game_mode_menu.connect("game_mode_selected", Callable(self, "on_game_mode_selected"))
+	popup_balls_menu.connect("color_changed", Callable(self, "on_color_changed"))
+	popup_balls_menu.connect("ball_changed", Callable(self, "on_ball_changed"))
+	popup_options_menu.connect("options_changed", Callable(self, "on_options_changed"))
 	
 	set_menu_colours()
 	
@@ -180,18 +180,18 @@ func on_ball_changed():
 	var ball_linear_velocity = ball.get_linear_velocity()
 	ball.queue_free()
 	var ball_scene = load("res://scenes/Balls/" + global.config.get_value("ball", "ball_file_name"))
-	ball = ball_scene.instance()
+	ball = ball_scene.instantiate()
 	add_child(ball)
 	ball.position = ball_position
 	ball.set_angular_velocity(ball_angular_velocity)
 	ball.set_linear_velocity(ball_linear_velocity)
-	ball.get_node("Light2D").energy = 1
-	ball.get_node("Light2D").enabled = global.config.get_value("lighting", "enabled")
+	ball.get_node("PointLight2D").energy = 1
+	ball.get_node("PointLight2D").enabled = global.config.get_value("lighting", "enabled")
 	ball.set_color(global.config.get_value("ball", "color"))
 
 func on_options_changed():
 	global.config.load("user://settings.cfg")
-	ball.get_node("Light2D").enabled = global.config.get_value("lighting", "enabled")
+	ball.get_node("PointLight2D").enabled = global.config.get_value("lighting", "enabled")
 	AudioServer.set_bus_mute(AudioServer.get_bus_index("Master"), global.config.get_value("audio", "volume") == 0)
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), global.config.get_value("audio", "volume"))
 	set_menu_colours()
@@ -200,5 +200,5 @@ func on_options_changed():
 
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "fadeout":
-		get_tree().change_scene("res://scenes/Board.tscn")
+		get_tree().change_scene_to_file("res://scenes/Board.tscn")
 

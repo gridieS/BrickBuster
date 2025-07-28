@@ -9,15 +9,15 @@ extends Popup
 
 var item_lists = [] # Used for quick rewriting with sorted lists
 
-onready var global = get_node("/root/Global")
-onready var tab_container = $MarginContainer/VBoxContainer/TabContainer
-onready var sort_options_button = $MarginContainer/VBoxContainer/HBoxContainer/SortOptionButton
+@onready var global = get_node("/root/Global")
+@onready var tab_container = $MarginContainer/VBoxContainer/TabContainer
+@onready var sort_options_button = $MarginContainer/VBoxContainer/HBoxContainer/SortOptionButton
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if global.save_game_data and global.save_game_data.has("past_scores"):
 		var past_scores = global.save_game_data["past_scores"]
-		if not past_scores.empty():
+		if not past_scores.is_empty():
 			
 			for key in past_scores.keys():
 				var scroll_container = ScrollContainer.new()
@@ -32,7 +32,7 @@ func _ready():
 				item_list.size_flags_horizontal = 3
 				item_list.size_flags_vertical = 3
 				item_list.auto_height = true
-				item_list.set("custom_fonts/font", global.noto_font)
+				item_list.set("theme_override_fonts/font", global.noto_font)
 				
 				var item_index = 0
 				var top_score = past_scores[key].max()
@@ -59,7 +59,7 @@ func _ready():
 	animation.track_insert_key(track_index, 0.0, 1.0)
 	animation.track_insert_key(track_index, 0.3, 0.0)
 	$AnimationPlayer.add_animation("fadeout", animation)
-	$AnimationPlayer.connect("animation_finished", self, "on_Fadeout_finished")
+	$AnimationPlayer.connect("animation_finished", Callable(self, "on_Fadeout_finished"))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -93,18 +93,18 @@ func _on_SortOptionButton_item_selected(index):
 		for index in num_items:
 			scores.append([list.get_item_text(index), list.get_item_metadata(index)])
 		
-		scores.sort_custom(Sorter, "sort_score_descending")
+		scores.sort_custom(Callable(Sorter, "sort_score_descending"))
 		var top_score = scores[0][0]
 		
 		match index:
 			0:
-				scores.sort_custom(Sorter, "sort_id_ascending")
+				scores.sort_custom(Callable(Sorter, "sort_id_ascending"))
 			1:
-				scores.sort_custom(Sorter, "sort_id_descending")
+				scores.sort_custom(Callable(Sorter, "sort_id_descending"))
 			2:
-				scores.sort_custom(Sorter, "sort_score_ascending")
+				scores.sort_custom(Callable(Sorter, "sort_score_ascending"))
 			3:
-				scores.sort_custom(Sorter, "sort_score_descending")
+				scores.sort_custom(Callable(Sorter, "sort_score_descending"))
 		
 		list.clear()
 		var item_index = 0

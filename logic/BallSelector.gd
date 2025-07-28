@@ -11,9 +11,9 @@ signal ball_changed
 # var a = 2
 # var b = "text"
 
-onready var global = get_node("/root/Global")
-onready var ball_list = $VBoxContainer/TabContainer/BallPicker/ScrollContainer/ItemList
-onready var color_picker = $VBoxContainer/TabContainer/ColourMenu/VBoxContainer/ColorPicker
+@onready var global = get_node("/root/Global")
+@onready var ball_list = $VBoxContainer/TabContainer/BallPicker/ScrollContainer/ItemList
+@onready var color_picker = $VBoxContainer/TabContainer/ColourMenu/VBoxContainer/ColorPicker
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -23,7 +23,7 @@ func _ready():
 	var iterator = 0
 	for ball_scene in global.ball_scenes:
 		var ball_filename = ball_scene["filename"]
-		var ball_meta = ball_scene["ball_scene"].instance().get_node("MetaNode")
+		var ball_meta = ball_scene["ball_scene"].instantiate().get_node("MetaNode")
 		ball_list.add_item(ball_meta.ball_name, ball_meta.ball_icon)
 		ball_list.set_item_metadata(iterator, ball_filename)
 		
@@ -53,7 +53,7 @@ func _ready():
 	animation.track_insert_key(track_index, 0.0, 1.0)
 	animation.track_insert_key(track_index, 0.3, 0.0)
 	$AnimationPlayer.add_animation("fadeout", animation)
-	$AnimationPlayer.connect("animation_finished", self, "on_Fadeout_finished")
+	$AnimationPlayer.connect("animation_finished", Callable(self, "on_Fadeout_finished"))
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -71,7 +71,7 @@ func _on_ApplyButton_pressed():
 			for item_index in ball_list.get_item_count():
 				 ball_list.set_item_custom_bg_color(item_index, ColorN("red", 0))
 			ball_list.set_item_custom_bg_color(ball_list.get_selected_items()[0], ColorN("red", 1))
-			ball_list.unselect_all()
+			ball_list.deselect_all()
 		
 		global.config.save("user://settings.cfg")
 		global.reload_selected_ball()

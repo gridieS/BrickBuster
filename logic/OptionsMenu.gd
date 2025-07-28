@@ -13,21 +13,21 @@ signal options_changed
 var standard_selected_theme_item_idx = null
 var mega_selected_theme_item_idx = null
 
-onready var global = get_node("/root/Global")
-onready var light_switch = $TabContainer/General/VBoxContainer/SettingsSwitchesContainer/LightSwitch
-onready var audio_switch = $TabContainer/General/VBoxContainer/SettingsSwitchesContainer/AudioSwitch
-onready var volume_slider = $TabContainer/General/VBoxContainer/SettingsSwitchesContainer/VolumeSlider
-onready var standard_themes_list = $TabContainer/Theming/Bricks/StandardBrick/ItemList
-onready var mega_themes_list = $TabContainer/Theming/Bricks/MegaBrick/ItemList
-onready var line_color_picker = $TabContainer/Theming/LaunchLine/ColorPicker
+@onready var global = get_node("/root/Global")
+@onready var light_switch = $TabContainer/General/VBoxContainer/SettingsSwitchesContainer/LightSwitch
+@onready var audio_switch = $TabContainer/General/VBoxContainer/SettingsSwitchesContainer/AudioSwitch
+@onready var volume_slider = $TabContainer/General/VBoxContainer/SettingsSwitchesContainer/VolumeSlider
+@onready var standard_themes_list = $TabContainer/Theming/Bricks/StandardBrick/ItemList
+@onready var mega_themes_list = $TabContainer/Theming/Bricks/MegaBrick/ItemList
+@onready var line_color_picker = $TabContainer/Theming/LaunchLine/ColorPicker
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	if global.err == OK:
-		light_switch.pressed = global.config.get_value("lighting", "enabled")
+		light_switch.button_pressed = global.config.get_value("lighting", "enabled")
 		volume_slider.value = global.config.get_value("audio", "volume")
 		if global.config.get_value("audio", "volume") == 0:
-			audio_switch.pressed = false
+			audio_switch.button_pressed = false
 	
 	volume_slider.visible = audio_switch.pressed
 	
@@ -43,8 +43,8 @@ func _ready():
 		else:
 			standard_themes_list.add_item(global.colour_themes[brick_theme].display_name)
 		standard_themes_list.set_item_metadata(iterator, brick_theme)
-		standard_themes_list.set_item_custom_bg_color(iterator, gradient.interpolate(1))
-		standard_themes_list.set_item_custom_fg_color(iterator, gradient.interpolate(0))
+		standard_themes_list.set_item_custom_bg_color(iterator, gradient.sample(1))
+		standard_themes_list.set_item_custom_fg_color(iterator, gradient.sample(0))
 		
 		if brick_theme == global.config.get_value("theme", "mega_bricks"):
 			mega_themes_list.add_item(global.colour_themes[brick_theme].display_name + " (Selected)")
@@ -52,8 +52,8 @@ func _ready():
 		else:
 			mega_themes_list.add_item(global.colour_themes[brick_theme].display_name)
 		mega_themes_list.set_item_metadata(iterator, brick_theme)
-		mega_themes_list.set_item_custom_bg_color(iterator, gradient.interpolate(1))
-		mega_themes_list.set_item_custom_fg_color(iterator, gradient.interpolate(0))
+		mega_themes_list.set_item_custom_bg_color(iterator, gradient.sample(1))
+		mega_themes_list.set_item_custom_fg_color(iterator, gradient.sample(0))
 		
 		iterator += 1 
 	
@@ -65,14 +65,14 @@ func _ready():
 	animation.track_insert_key(track_index, 0.0, 1.0)
 	animation.track_insert_key(track_index, 0.3, 0.0)
 	$AnimationPlayer.add_animation("fadeout", animation)
-	$AnimationPlayer.connect("animation_finished", self, "on_Fadeout_finished")
+	$AnimationPlayer.connect("animation_finished", Callable(self, "on_Fadeout_finished"))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
 
 func _on_ApplyButton_pressed():
-	var settings_changed = false
+	var changed = false
 	var standard_theme_changed = false
 	var mega_theme_changed = false
 	var new_standard_theme_item_idx = null
@@ -81,27 +81,27 @@ func _on_ApplyButton_pressed():
 	if global.err == OK or global.err == ERR_FILE_NOT_FOUND:
 		global.config.set_value("lighting", "enabled", light_switch.pressed)
 		global.config.set_value("audio", "volume", volume_slider.value)
-		settings_changed = true
+		changed = true
 	
 	if standard_themes_list.is_anything_selected():
 		new_standard_theme_item_idx = standard_themes_list.get_selected_items()[0]
 		var selected_item_string = standard_themes_list.get_item_metadata(new_standard_theme_item_idx)
 		global.config.set_value("theme", "standard_bricks", selected_item_string)
-		settings_changed = true
+		changed = true
 		standard_theme_changed = true
 	
 	if mega_themes_list.is_anything_selected():
 		new_mega_theme_item_idx = mega_themes_list.get_selected_items()[0]
 		var selected_item_string = mega_themes_list.get_item_metadata(new_mega_theme_item_idx)
 		global.config.set_value("theme", "mega_bricks", selected_item_string)
-		settings_changed = true
+		changed = true
 		mega_theme_changed = true
 	
 	if line_color_picker.color.to_html() != global.config.get_value("theme", "launch_line_color"):
 		global.config.set_value("theme", "launch_line_color", line_color_picker.color.to_html())
-		settings_changed = true
+		changed = true
 	
-	if settings_changed:
+	if changed:
 		global.config.save("user://settings.cfg")
 		global.set_theme()
 		emit_signal("options_changed")

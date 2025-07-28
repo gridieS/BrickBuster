@@ -9,9 +9,9 @@ signal game_mode_selected(game_mode_name)
 # var a = 2
 # var b = "text"
 
-onready var global = get_node("/root/Global")
-onready var game_mode_list = $VBoxContainer/GameModeList
-onready var go_button = $HBoxContainer/GoButton
+@onready var global = get_node("/root/Global")
+@onready var game_mode_list = $VBoxContainer/GameModeList
+@onready var go_button = $HBoxContainer/GoButton
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -27,7 +27,7 @@ func _ready():
 	animation.track_insert_key(track_index, 0.0, 1.0)
 	animation.track_insert_key(track_index, 0.3, 0.0)
 	$AnimationPlayer.add_animation("fadeout", animation)
-	$AnimationPlayer.connect("animation_finished", self, "on_Fadeout_finished")
+	$AnimationPlayer.connect("animation_finished", Callable(self, "on_Fadeout_finished"))
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

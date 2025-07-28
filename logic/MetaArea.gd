@@ -12,11 +12,11 @@ signal quit_to_menu_button_clicked
 # var a = 2
 # var b = "text"
 
-onready var global = get_node("/root/Global")
-onready var menu_button = $MarginContainer/HBoxContainer/Button
-onready var popup = $MarginContainer/HBoxContainer/Button/PopupMenu
-onready var help_popup = $Instructions
-onready var close_timer = $CloseTimer
+@onready var global = get_node("/root/Global")
+@onready var menu_button = $MarginContainer/HBoxContainer/Button
+@onready var popup = $MarginContainer/HBoxContainer/Button/PopupMenu
+@onready var help_popup = $Instructions
+@onready var close_timer = $CloseTimer
 var mouse_in_popup = false
 var mouse_on_button = false
 
@@ -26,7 +26,7 @@ func _ready():
 	popup.add_item("Restart", 1)
 	popup.add_item("Help", 2)
 	popup.add_item("Quit to main menu", 3)
-	popup.connect("id_pressed", self, "_on_MenuItem_pressed")
+	popup.connect("id_pressed", Callable(self, "_on_MenuItem_pressed"))
 	popup.popup_centered()
 	popup.hide()
 	
