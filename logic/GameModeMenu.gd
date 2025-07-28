@@ -21,15 +21,7 @@ func _ready():
 		game_mode_list.set_item_metadata(iterator, global.game_modes[game_mode])
 		iterator += 1
 	
-	var animation_library = AnimationLibrary.new()
-	var animation = Animation.new()
-	var track_index = animation.add_track(Animation.TYPE_VALUE)
-	animation.track_set_path(track_index, String(self.get_path()) + ":modulate:a")
-	animation.track_insert_key(track_index, 0.0, 1.0)
-	animation.track_insert_key(track_index, 0.3, 0.0)
-	animation_library.add_animation("fadeout", animation)
-	$AnimationPlayer.add_animation_library("fadeout", animation_library)
-	$AnimationPlayer.connect("animation_finished", Callable(self, "on_Fadeout_finished"))
+
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):

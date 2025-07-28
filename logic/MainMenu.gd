@@ -110,15 +110,14 @@ func _ready():
 	popup_options_menu.connect("options_changed", Callable(self, "on_options_changed"))
 	
 	set_menu_colours()
-	
+	var animation_library = $AnimationPlayer.get_animation_library("")
 	for popup in popups:
 		var animation = Animation.new()
 		var track_index = animation.add_track(Animation.TYPE_VALUE)
 		animation.track_set_path(track_index, str(popup.get_path()) + ":modulate:a")
 		animation.track_insert_key(track_index, 0.0, 0.0)
 		animation.track_insert_key(track_index, 0.3, 1.0)
-		$AnimationPlayer.add_animation(popup.name + "_fadein", animation)
-	
+		animation_library.add_animation(popup.name + "_fadein", animation)
 	# Fade-in and fade-out animation for the whole main menu has been added through UI to AnimationPlayer node
 	if OS.get_name() == "Android" or OS.get_name() == "iOS":
 		donate_button.hide()
@@ -201,4 +200,3 @@ func on_options_changed():
 func _on_AnimationPlayer_animation_finished(anim_name):
 	if anim_name == "fadeout":
 		get_tree().change_scene_to_file("res://scenes/Board.tscn")
-

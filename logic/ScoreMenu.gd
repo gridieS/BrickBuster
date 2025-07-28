@@ -42,8 +42,8 @@ func _ready():
 					# Since list is currently in the order acquired from the save file.
 					item_list.set_item_metadata(item_index, item_index)
 					if score == top_score:
-						item_list.set_item_custom_bg_color(item_index,ColorN("red", 1))
-						item_list.set_item_custom_fg_color(item_index,ColorN("white", 1))
+						item_list.set_item_custom_bg_color(item_index,Color("red", 1))
+						item_list.set_item_custom_fg_color(item_index,Color("white", 1))
 					item_index += 1
 		
 		sort_options_button.add_item("By attainment (asc)", 0)
@@ -53,12 +53,14 @@ func _ready():
 		sort_options_button.theme = Theme.new()
 		sort_options_button.theme.default_font = global.noto_font
 	
+	var animation_library = AnimationLibrary.new()
 	var animation = Animation.new()
 	var track_index = animation.add_track(Animation.TYPE_VALUE)
-	animation.track_set_path(track_index, str(self.get_path()) + ":modulate:a")
+	animation.track_set_path(track_index, String(self.get_path()) + ":modulate:a")
 	animation.track_insert_key(track_index, 0.0, 1.0)
 	animation.track_insert_key(track_index, 0.3, 0.0)
-	$AnimationPlayer.add_animation("fadeout", animation)
+	animation_library.add_animation("fadeout", animation)
+	$AnimationPlayer.add_animation_library("fadeout", animation_library)
 	$AnimationPlayer.connect("animation_finished", Callable(self, "on_Fadeout_finished"))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -90,8 +92,8 @@ func _on_SortOptionButton_item_selected(index):
 	for list in item_lists: # Redo each list
 		var num_items = list.get_item_count()
 		var scores = []
-		for index in num_items:
-			scores.append([list.get_item_text(index), list.get_item_metadata(index)])
+		for item_index in num_items:
+			scores.append([list.get_item_text(item_index), list.get_item_metadata(item_index)])
 		
 		scores.sort_custom(Callable(Sorter, "sort_score_descending"))
 		var top_score = scores[0][0]
@@ -112,7 +114,7 @@ func _on_SortOptionButton_item_selected(index):
 			list.add_item(score[0], null, false)
 			list.set_item_metadata(item_index, score[1])
 			if score[0] == top_score:
-				list.set_item_custom_bg_color(item_index,ColorN("red", 1))
+				list.set_item_custom_bg_color(item_index,Color("red", 1))
 			item_index += 1
 
 func _on_CloseButton_pressed():

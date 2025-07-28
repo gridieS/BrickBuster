@@ -5,12 +5,14 @@ extends Popup
 # TODO: Make these invoke Google Play payment on Android.
 
 func _ready():
+	var animation_library = AnimationLibrary.new()
 	var animation = Animation.new()
 	var track_index = animation.add_track(Animation.TYPE_VALUE)
 	animation.track_set_path(track_index, String(self.get_path()) + ":modulate:a")
 	animation.track_insert_key(track_index, 0.0, 1.0)
 	animation.track_insert_key(track_index, 0.3, 0.0)
-	$AnimationPlayer.add_animation("fadeout", animation)
+	animation_library.add_animation("fadeout", animation)
+	$AnimationPlayer.add_animation_library("fadeout", animation_library)
 	$AnimationPlayer.connect("animation_finished", Callable(self, "on_Fadeout_finished"))
 
 func _on_CloseButton_pressed():
