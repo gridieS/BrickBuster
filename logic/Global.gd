@@ -9,7 +9,6 @@ extends Node
 # throughout the game, such as loading files and reading the config files.
 
 
-var save_game = File.new()
 var save_game_data = null
 var rng = RandomNumberGenerator.new()
 var config = ConfigFile.new()
@@ -68,11 +67,11 @@ var selected_standard_theme = "sunburst"
 var selected_mega_theme = "supernova"
 
 func reload_save_data():
-	save_game.open("user://savegame.save", File.READ)
-	var test_json_conv = JSON.new()
-	test_json_conv.parse(save_game.get_line())
-	save_game_data = test_json_conv.get_data()
-	save_game.close()
+	var save_game_file = FileAccess.open("user://savegame.save", FileAccess.READ)
+	var json_conv = JSON.new()
+	json_conv.parse(save_game_file.get_line())
+	save_game_data = json_conv.get_data()
+	save_game_file.close()
 
 func reload_selected_ball():
 	selected_ball_scene = load("res://scenes/Balls/" + config.get_value("ball", "ball_file_name"))
@@ -93,9 +92,9 @@ func convert_past_scores(in_past_scores):
 		"past_scores": new_type_scores
 	}
 	
-	save_game.open("user://savegame.save", File.WRITE)
-	save_game.store_line(JSON.new().stringify(save_dict))
-	save_game.close()
+	var save_game_file = FileAccess.open("user://savegame.save", FileAccess.WRITE)
+	save_game_file.store_line(JSON.new().stringify(save_dict))
+	save_game_file.close()
 	reload_save_data()
 	return new_type_scores
 
@@ -117,16 +116,15 @@ func write_save_file(game_mode = "standard", first_save = false):
 	elif save_game_data:
 		save_dict["past_scores"] = save_game_data["past_scores"]
 	
-	save_game.open("user://savegame.save", File.WRITE)
-	save_game.store_line(JSON.new().stringify(save_dict))
-	save_game.close()
+	var save_game_file = FileAccess.open("user://savegame.save", FileAccess.WRITE)
+	save_game_file.store_line(JSON.new().stringify(save_dict))
+	save_game_file.close()
 	reload_save_data()
 
 # Gets the balls according to the files found in /scenes/Balls/. 
 func fetch_balls():
-	var ball_scenes_dir = DirAccess.new()
 	var path = "res://scenes/Balls/"
-	ball_scenes_dir.open(path)
+	var ball_scenes_dir = DirAccess.open(path)
 	ball_scenes_dir.list_dir_begin() # TODOConverter3To4 fill missing arguments https://github.com/godotengine/godot/pull/40547
 
 	while true:
@@ -141,17 +139,16 @@ func fetch_balls():
 
 # Gets the gamemodes according to the files found in /logic/GameModes/. 
 func fetch_game_modes():
-	var game_modes_dir = DirAccess.new()
 	var path = "res://logic/GameModes/"
-	game_modes_dir.open(path)
+	var game_modes_dir = DirAccess.open(path)
 	game_modes_dir.list_dir_begin() # TODOConverter3To4 fill missing arguments https://github.com/godotengine/godot/pull/40547
-
+	
 	while true:
 		var file_name = game_modes_dir.get_next()
 		print(file_name)
 		if file_name == "":
 			break
-		elif not file_name.begins_with("."):
+		elif not file_name.begins_with(".") and not file_name.ends_with(".uid"):
 			var game_mode_file = load(path + file_name)
 			var holder_node = Node2D.new()
 			holder_node.set_script(game_mode_file)
@@ -170,7 +167,7 @@ func set_theme():
 	selected_mega_theme = config.get_value("theme", "mega_bricks")
 
 func _ready():
-	if save_game.file_exists("user://savegame.save"):
+	if FileAccess.file_exists("user://savegame.save"):
 		reload_save_data()
 		if save_game_data and save_game_data.has("past_scores"):
 			past_scores = save_game_data["past_scores"]
@@ -232,4 +229,3 @@ func _ready():
 	fetch_balls()
 	reload_selected_ball()
 	set_theme()
-
